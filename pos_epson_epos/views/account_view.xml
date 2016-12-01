@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <record id="view_account_journal_pos_name_form" model="ir.ui.view">
+      <field name="name">account.journal.pos.name</field>
+      <field name="model">account.journal</field>
+      <field name="inherit_id" ref="point_of_sale.view_account_journal_pos_user_form" />
+      <field name="arch" type="xml">
+        <field name="journal_user" position="after">
+          <field name="pos_journal_name"/>
+        </field>
+      </field>
+    </record>
+
+  </data>
+</openerp>

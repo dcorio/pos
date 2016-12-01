@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <record id="company_test" model="ir.ui.view">
+      <field name="name">res.company</field>
+      <field name="model">res.company</field>
+      <field name="inherit_id" ref="base.view_company_form" />
+      <field name="arch" type="xml">
+
+        <page name="report" position="after">
+          <page name="pos" string="POS">
+            <group name="pos-main">
+              <field name="pos_receipt_header_1"/>
+              <field name="pos_receipt_header_2"/>
+              <field name="pos_receipt_footer_1"/>
+              <field name="pos_receipt_footer_2"/>
+              <field name="pos_zreport_print_date"
+                     groups="pos_epson_epos.group_pos_print_z" />
+            </group>
+          </page>
+        </page>
+
+      </field>
+    </record>
+
+  </data>
+</openerp>

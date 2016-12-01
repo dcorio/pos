@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <record id="view_pos_config_form" model="ir.ui.view">
+      <field name="name">pos.config.form.view</field>
+      <field name="model">pos.config</field>
+      <field name="inherit_id" ref="point_of_sale.view_pos_config_form" />
+      <field name="arch" type="xml">
+        <field name="iface_cashdrawer" position="after">
+          <field name="create_epson_xml"/>
+          <field name="protocol"/>
+          <field name="url"/>
+          <field name="receipt_action" />
+          <field name="epson_xml_path" attrs="{'invisible':[('receipt_action', '!=', 'storefs')]}"/>
+          <field name="epson_printer_ip" attrs="{'invisible':[('receipt_action', '!=', 'printit')]}"/>
+        </field>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_pos_session_closure_form">
+      <field name="name">pos.session.closure.form.view</field>
+      <field name="model">pos.session</field>
+      <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+      <field name="arch" type="xml">
+
+        <field name="state" position="after">
+
+          <field name="pos_can_print_zreport" readonly="1" />
+
+          <button name="print_x" type="button" string="Stampa rapporto finanziario"
+                  pos_print="1" print_action="printXReport"
+                  class="oe_highlight" icon="gtk-print"
+                  />
+
+          <button name="print_z" type="button" string="Chiusura fiscale"
+                  pos_print="1" print_action="printZReport"
+                  class="oe_highlight" icon="gtk-print"
+                  groups="pos_epson_epos.group_pos_print_z"
+                  attrs="{'invisible': [('pos_can_print_zreport','=',True)]}"
+                  />
+        </field>
+
+      </field>
+    </record>
+
+    <record id="res_users_pos_ope_form" model="ir.ui.view">
+      <field name="name">res.users.pos.ope.form</field>
+      <field name="model">res.users</field>
+      <field name="inherit_id" ref="point_of_sale.res_users_form_view" />
+      <field name="arch" type="xml">
+        <field name="pos_security_pin" position="after">
+          <field name="pos_operator_id"/>
+        </field>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_restaurant_printer_form_epos">
+      <field name="name">restaurant.printer.epos.form</field>
+      <field name="model">restaurant.printer</field>
+      <field name="inherit_id" ref="pos_restaurant.view_restaurant_printer_form"/>
+      <field name="arch" type="xml">
+          <field name="proxy_ip" position="after">
+            <field name="epos_printer"/>
+            <field name="epos_url" attrs="{'readonly': [('epos_printer', '=', False)]}"/>
+          </field>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_restaurant_printer_tree_epos">
+      <field name="name">restaurant.printer.epos.form</field>
+      <field name="model">restaurant.printer</field>
+      <field name="inherit_id" ref="pos_restaurant.view_restaurant_printer"/>
+      <field name="arch" type="xml">
+          <field name="proxy_ip" position="after">
+            <field name="epos_printer"/>
+          </field>
+      </field>
+    </record>
+
+
+  </data>
+</openerp>
