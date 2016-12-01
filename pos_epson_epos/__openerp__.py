@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
 # See LICENSE file for full copyright and licensing details.
 {
-    'name': 'Epson Fiscal Print',
-    'version': '0.1',
+    'name': 'Epson ePOS',
+    'version': '10.0.1.0.1',
     'category': 'POS',
-    'summary': 'Epson Fiscal Print',
-    'author': 'abstract',
-    'description': """
-    This module generates Epson compatible XML files from the "Print receipt"
-    button of the point of sale UI.
-    """,
-    'website': 'http://www.abstract.it',
+    'summary': 'Epson ePOS',
+    'author': 'Davide Corio, Odoo Community Association (OCA)',
+    'website': 'http://www.odoo-community.org',
     'depends': [
         'point_of_sale',
         'pos_restaurant',
