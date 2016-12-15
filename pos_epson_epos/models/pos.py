@@ -37,6 +37,10 @@ class PosConfig(models.Model):
     epson_printer_ip = fields.Char(
         'Epson printer IP',
     )
+    paper_width = fields.Selection(
+        [('54', '54 mm'), ('83', '83 mm')],
+        string='Paper Width'
+    )
 
     @api.onchange('protocol')
     def onchange_protocol(self):

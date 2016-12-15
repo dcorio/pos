@@ -269,7 +269,7 @@ odoo.define('pos_epson_epos.pos_epson_epos', function (require) {
             builder.addText(receipt.name+'\n');
             builder.addText('\n');
             builder = self.printReceiptFooter(builder, receipt);
-            builder.addCut(builder.CUT_FEED);
+            //builder.addCut(builder.CUT_FEED);
             return builder.toString();
         },
 

@@ -14,6 +14,7 @@
           <field name="receipt_action" />
           <field name="epson_xml_path" attrs="{'invisible':[('receipt_action', '!=', 'storefs')]}"/>
           <field name="epson_printer_ip" attrs="{'invisible':[('receipt_action', '!=', 'printit')]}"/>
+          <field name="paper_width"/>
         </field>
       </field>
     </record>
