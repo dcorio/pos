@@ -17,7 +17,7 @@ odoo.define('pos_epson_epos.pos_epson_epos', function (require) {
         return xml;
     };
 
-    models.load_fields("pos.config",['receipt_header','receipt_footer'])
+    models.load_fields("pos.config",['receipt_header','receipt_footer', 'paper_width'])
 
     screens.OrderWidget.include({
         update_summary: function(){
@@ -180,18 +180,23 @@ odoo.define('pos_epson_epos.pos_epson_epos', function (require) {
                 builder.addText('  '+line.quantity+' x '+this.format_currency_no_symbol(line.price)+'\n');
             }
             var name = line.product_name;
+	    var paper_type = this.pos.config.paper_width;
+	    var paper_width = 47; 
+	    if (paper_type == "54") {
+		paper_width = 33;
+	    }
             if (line.discount > 0) {
                 var price = this.format_currency_no_symbol(line.price*line.quantity);
-                var spaces = new Array(33-name.length-price.length).join(' ');
+                var spaces = new Array(paper_width-name.length-price.length).join(' ');
                 builder.addText(name+spaces+price+'\n');
                 var disc_label = '  '+_t('Discount')+' '+line.discount+'%';
                 var disc_amount = this.format_currency_no_symbol((line.price_with_tax-(line.price*line.quantity)));
-                var spaces = new Array(33-disc_label.length-disc_amount.length).join(' ');
+                var spaces = new Array(paper_width-disc_label.length-disc_amount.length).join(' ');
                 builder.addText(disc_label+spaces+disc_amount+'\n');
             }
             else {
                 var price = this.format_currency_no_symbol(line.price_with_tax);
-                var spaces = new Array(33-name.length-price.length).join(' ');
+                var spaces = new Array(paper_width-name.length-price.length).join(' ');
                 builder.addText(name+spaces+price+'\n');
             }            
             return builder
@@ -217,7 +222,12 @@ odoo.define('pos_epson_epos.pos_epson_epos', function (require) {
             var c = this.pos.company;
             var total_label = _('Total')+' '+receipt.currency.symbol+':';
             var total_amount = this.format_currency_no_symbol(receipt.total_with_tax);
-            var spaces = new Array(33-total_label.length-total_amount.length).join(' ');
+            var paper_type = this.pos.config.paper_width;
+            var paper_width = 47;
+            if (paper_type == "54") {
+                paper_width = 33;
+            }
+            var spaces = new Array(paper_width-total_label.length-total_amount.length).join(' ');
             builder.addText('\n');
             builder.addTextStyle(false, false, true, builder.COLOR_1);
             builder.addText(total_label+spaces+total_amount+'\n');
@@ -229,7 +239,12 @@ odoo.define('pos_epson_epos.pos_epson_epos', function (require) {
             var c = this.pos.company;
             var change_label = _t('Change:');
             var change_amount = this.format_currency_no_symbol(receipt.change);
-            var spaces = new Array(33-change_label.length-change_amount.length).join(' ');
+            var paper_type = this.pos.config.paper_width;
+            var paper_width = 47;
+            if (paper_type == "54") {
+                paper_width = 33;
+            }
+            var spaces = new Array(paper_width-change_label.length-change_amount.length).join(' ');
             builder.addText(change_label+spaces+change_amount+'\n');
             return builder;
         },
@@ -239,7 +254,12 @@ odoo.define('pos_epson_epos.pos_epson_epos', function (require) {
             var c = this.pos.company;
             var journal = '  '+line.journal+':';
             var amount = this.format_currency_no_symbol(line.amount);
-            var spaces = new Array(33-line.journal.length-amount.length).join(' ');
+            var paper_type = this.pos.config.paper_width;
+            var paper_width = 47;
+            if (paper_type == "54") {
+                paper_width = 33;
+            }
+            var spaces = new Array(paper_width-line.journal.length-amount.length).join(' ');
             builder.addText(line.journal+spaces+amount+'\n');
             return builder
         },

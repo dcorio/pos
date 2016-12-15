@@ -107,7 +107,7 @@ odoo.define('pos_epson_epos.orderprinter', function (require) {
                             });
                         }
                         builder.addText('\n\n\n');
-                        builder.addFeedPosition(builder.FEED_PEELING);
+                        builder.addCut(builder.CUT_FEED);
                         printer.send(builder.toString());
                     }
                 }
