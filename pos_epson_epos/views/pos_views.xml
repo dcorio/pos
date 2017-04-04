@@ -16,6 +16,13 @@
           <field name="epson_printer_ip" attrs="{'invisible':[('receipt_action', '!=', 'printit')]}"/>
           <field name="paper_width"/>
         </field>
+        <xpath expr="//form" position="inside">
+          <group>
+            <field name="currency"/>
+            <field name="z_daily_total"/>
+            <field name="z_grand_total"/>
+          </group>
+        </xpath>
       </field>
     </record>
 
@@ -25,20 +32,32 @@
       <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
       <field name="arch" type="xml">
 
-        <field name="state" position="after">
-
+          <field name="state" position="after">
+          <field name="protocol" invisible="1"/>
           <field name="pos_can_print_zreport" readonly="1" />
 
-          <button name="print_x" type="button" string="Stampa rapporto finanziario"
-                  pos_print="1" print_action="printXReport"
-                  class="oe_highlight" icon="gtk-print"
+          <button name="print_x_fp" type="button" string="X Report"
+                  pos_print="1" print_action="printXReportFP"
+                  class="oe_highlight" attrs="{'invisible': [('protocol', '!=', 'epson_fp')]}"
                   />
 
-          <button name="print_z" type="button" string="Chiusura fiscale"
-                  pos_print="1" print_action="printZReport"
-                  class="oe_highlight" icon="gtk-print"
+          <button name="print_z_fp" type="button" string="Z Report"
+                  pos_print="1" print_action="printZReportFP"
+                  class="oe_highlight"
                   groups="pos_epson_epos.group_pos_print_z"
-                  attrs="{'invisible': [('pos_can_print_zreport','=',True)]}"
+                  attrs="{'invisible': ['|',('pos_can_print_zreport','=',True),('protocol','!=','epson_fp')]}"
+                  />
+
+          <button name="print_x_epos" type="button" string="X Report"
+                  pos_print="1" print_action="printXReportEPOS"
+                  class="oe_highlight" attrs="{'invisible': [('protocol', '=', 'epson_fp')]}"
+                  />
+
+          <button name="print_z_fp" type="button" string="Z Report"
+                  pos_print="1" print_action="printZReportEPOS"
+                  class="oe_highlight"
+                  groups="pos_epson_epos.group_pos_print_z"
+                  attrs="{'invisible': ['|',('pos_can_print_zreport','=',True),('protocol','=','epson_fp')]}"
                   />
         </field>
 

@@ -18,6 +18,30 @@ EPSON_PROTOCOL = [
 class PosConfig(models.Model):
     _inherit = "pos.config"
 
+    @api.multi
+    def _get_z_daily_total(self):
+        amount = 0
+        for pos in self:
+            for session in self.session_ids:
+                if session.state == 'closed':
+                    start_at = fields.Date.from_string(session.start_at[:10])
+                    today = fields.Date.from_string(
+                        fields.Date.context_today(self))
+                    if today == start_at:
+                        for statement in session.statement_ids:
+                            amount += statement.balance_end
+            pos.z_daily_total = amount
+
+    @api.multi
+    def _get_z_grand_total(self):
+        amount = 0
+        for pos in self:
+            for session in self.session_ids:
+                if session.state == 'closed':
+                    for statement in session.statement_ids:
+                        amount += statement.balance_end
+            pos.z_daily_total = amount
+
     create_epson_xml = fields.Boolean('Create Epson XML')
     protocol = fields.Selection(
         string='EPSON Protocol',
@@ -42,6 +66,10 @@ class PosConfig(models.Model):
         string='Paper Width'
     )
 
+    currency = fields.Char('Currency Name', related='currency_id.name')
+    z_daily_total = fields.Float('Z Daily Total', compute='_get_z_daily_total')
+    z_grand_total = fields.Float('Z Grand Total', compute='_get_z_grand_total')
+
     @api.onchange('protocol')
     def onchange_protocol(self):
         if self.protocol == 'epsonfp':
@@ -59,6 +87,8 @@ class PosSession(models.Model):
         compute='_compute_pos_can_print_zreport',
         help='If true you will be allowed to print Z report.'
     )
+
+    protocol = fields.Selection(related='config_id.protocol')
 
     @api.depends('config_id.company_id.pos_zreport_print_date')
     def _compute_pos_can_print_zreport(self):
