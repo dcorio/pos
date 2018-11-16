@@ -8,7 +8,7 @@
       <field name="inherit_id" ref="base.view_company_form" />
       <field name="arch" type="xml">
 
-        <page name="report" position="after">
+        <notebook position="inside">
           <page name="pos" string="POS">
             <group name="pos-main">
               <field name="pos_receipt_header_1"/>
@@ -19,7 +19,7 @@
                      groups="pos_epson_epos.group_pos_print_z" />
             </group>
           </page>
-        </page>
+        </notebook>
 
       </field>
     </record>
